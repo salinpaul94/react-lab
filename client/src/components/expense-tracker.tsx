@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Container } from "react-bootstrap";
+import { Container, Alert } from "react-bootstrap";
 import IExpenseItem from "../models/expense";
 import { getAllExpenseItems } from "../services/expense";
 import { ExpenseItems } from "./expense-items";
@@ -8,12 +8,19 @@ import "bootstrap/dist/css/bootstrap.min.css"
 const ExpenseTracker = () => {
 
     const [expenseItems, setExpenseItems] = useState<IExpenseItem[]>([]);
+    const [error, setError] = useState<Error | null>(null);
 
     useEffect(() => {
         const getAllExpenseItemsInvoker = async () => {
-            const responseData = await getAllExpenseItems();
-            console.log(responseData);
-            setExpenseItems(responseData);
+
+            try {
+                const responseData = await getAllExpenseItems();
+                console.log(responseData);
+                setExpenseItems(responseData);
+            } catch (error){
+                setError(error as Error);
+            }
+            
         }
 
         getAllExpenseItemsInvoker();
@@ -21,7 +28,19 @@ const ExpenseTracker = () => {
 
     return (
         <Container className="my-4">
-            <ExpenseItems expenseItems={expenseItems}></ExpenseItems>
+            {
+                error && (
+                    <Alert variant="danger">
+                    {error.message}
+                    </Alert>
+                )
+            }
+
+            {
+                !error && (
+                    <ExpenseItems expenseItems={expenseItems}></ExpenseItems>
+                )
+            } 
         </Container>
     )
 }
