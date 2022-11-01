@@ -3,6 +3,7 @@ import { Container } from "react-bootstrap";
 import IExpenseItem from "../models/expense";
 import { getAllExpenseItems } from "../services/expense";
 import { ExpenseItems } from "./expense-items";
+import "bootstrap/dist/css/bootstrap.min.css"
 
 const ExpenseTracker = () => {
 
@@ -19,7 +20,7 @@ const ExpenseTracker = () => {
     }, []);
 
     return (
-        <Container>
+        <Container className="my-4">
             <ExpenseItems expenseItems={expenseItems}></ExpenseItems>
         </Container>
     )
