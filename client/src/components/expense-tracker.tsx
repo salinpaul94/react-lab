@@ -33,6 +33,9 @@ const ExpenseTracker = () => {
 
     return (
         <Container className="my-4">
+
+            <h2>Expense Management Application</h2>
+
             {
                 loading && (
                     <Spinner animation="border" role="status">
@@ -42,18 +45,18 @@ const ExpenseTracker = () => {
             }
 
             {
-                error && (
+                !error && !loading && (
+                    <ExpenseItems expenseItems={expenseItems}></ExpenseItems>
+                )
+            } 
+
+            {
+                error && !loading &&(
                     <Alert variant="danger">
                     {error.message}
                     </Alert>
                 )
             }
-
-            {
-                !error && (
-                    <ExpenseItems expenseItems={expenseItems}></ExpenseItems>
-                )
-            } 
         </Container>
     )
 }
