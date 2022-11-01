@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Container, Alert } from "react-bootstrap";
+import { Container, Alert, Spinner } from "react-bootstrap";
 import IExpenseItem from "../models/expense";
 import { getAllExpenseItems } from "../services/expense";
 import { ExpenseItems } from "./expense-items";
@@ -9,6 +9,7 @@ const ExpenseTracker = () => {
 
     const [expenseItems, setExpenseItems] = useState<IExpenseItem[]>([]);
     const [error, setError] = useState<Error | null>(null);
+    const [loading, setLoading] =  useState<boolean>(true);
 
     useEffect(() => {
         const getAllExpenseItemsInvoker = async () => {
@@ -17,8 +18,12 @@ const ExpenseTracker = () => {
                 const responseData = await getAllExpenseItems();
                 console.log(responseData);
                 setExpenseItems(responseData);
+                // setLoading(false);
             } catch (error){
                 setError(error as Error);
+                //setLoading(false);
+            } finally {
+                setLoading(false);
             }
             
         }
@@ -28,6 +33,14 @@ const ExpenseTracker = () => {
 
     return (
         <Container className="my-4">
+            {
+                loading && (
+                    <Spinner animation="border" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                    </Spinner>
+                )
+            }
+
             {
                 error && (
                     <Alert variant="danger">
