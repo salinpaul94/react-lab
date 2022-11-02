@@ -4,12 +4,13 @@ import IExpenseItem from "../models/expense";
 import { getAllExpenseItems } from "../services/expense";
 import { ExpenseItems } from "./expense-items";
 import "bootstrap/dist/css/bootstrap.min.css"
+import { ExpenseByPayees } from "./expense-by-payee";
 
 const ExpenseTracker = () => {
 
     const [expenseItems, setExpenseItems] = useState<IExpenseItem[]>([]);
     const [error, setError] = useState<Error | null>(null);
-    const [loading, setLoading] =  useState<boolean>(true);
+    const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
         const getAllExpenseItemsInvoker = async () => {
@@ -19,13 +20,13 @@ const ExpenseTracker = () => {
                 console.log(responseData);
                 setExpenseItems(responseData);
                 // setLoading(false);
-            } catch (error){
+            } catch (error) {
                 setError(error as Error);
                 //setLoading(false);
             } finally {
                 setLoading(false);
             }
-            
+
         }
 
         getAllExpenseItemsInvoker();
@@ -48,12 +49,18 @@ const ExpenseTracker = () => {
                 !error && !loading && (
                     <ExpenseItems expenseItems={expenseItems}></ExpenseItems>
                 )
-            } 
+            }
 
             {
-                error && !loading &&(
+                !error && !loading && (
+                    <ExpenseByPayees expenseItems={expenseItems}></ExpenseByPayees>
+                )
+            }
+
+            {
+                error && !loading && (
                     <Alert variant="danger">
-                    {error.message}
+                        {error.message}
                     </Alert>
                 )
             }
@@ -61,4 +68,4 @@ const ExpenseTracker = () => {
     )
 }
 
-export {ExpenseTracker};
+export { ExpenseTracker };
