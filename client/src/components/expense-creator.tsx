@@ -1,11 +1,31 @@
 import { Button, Modal, Form } from 'react-bootstrap'
-import { useState } from 'react';
-const ExpenseCreator = () => {
+import { FormEvent, useState, useRef } from 'react';
+import {getAllPayeeNames} from '../services/expense-utils';
+import IExpenseItem from "../models/expense"
+
+type ExpenseCreatorModel = {
+
+  expenseItems: IExpenseItem[];
+}
+const ExpenseCreator = ({expenseItems}: ExpenseCreatorModel) => {
 
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  const expenseDescriptionRef = useRef<HTMLInputElement>(null);
+  const payeeRef = useRef<HTMLSelectElement>(null);
+  const priceRef = useRef<HTMLInputElement>(null);
+
+  const handleAddExpense = (event : FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    console.log(`${expenseDescriptionRef?.current?.value}`);
+    console.log(`${payeeRef?.current?.value}`);
+    console.log(`${priceRef?.current?.value}`);
+    handleClose();
+  }
 
   return (
     <>
@@ -19,24 +39,28 @@ const ExpenseCreator = () => {
           <Modal.Title>Add new expense item</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form>
+          <Form onSubmit={handleAddExpense}>
             <Form.Group className="mb-3" controlId="expenseDescription">
               <Form.Label>Expense Description</Form.Label>
-              <Form.Control type="text" placeholder="Enter expense Description" />
+              <Form.Control type="text" placeholder="Enter expense Description" 
+              ref={expenseDescriptionRef}/>
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="payeeName">
               <Form.Label>Payee name</Form.Label>
-              <Form.Select aria-label="Default select example">
+              <Form.Select aria-label="Default select example" ref={payeeRef}>
                 <option>Select Payee Name</option>
-                <option value="Ramesh">Ramesh</option>
-                <option value="Rahul">Rahul</option>
+                {
+                  getAllPayeeNames(expenseItems).map((payeeName) => {
+                    return <option value={payeeName}>{payeeName}</option>
+                  })  
+                }
               </Form.Select>
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="price">
               <Form.Label>Price</Form.Label>
-              <Form.Control type="Number" placeholder="Enter the amount" />
+              <Form.Control type="Number" placeholder="Enter the amount" ref={priceRef} />
             </Form.Group>
 
             <Button variant="primary" type="submit">
