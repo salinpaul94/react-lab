@@ -1,4 +1,4 @@
-import { Button, Modal } from 'react-bootstrap'
+import { Button, Modal, Form } from 'react-bootstrap'
 import { useState } from 'react';
 const ExpenseCreator = () => {
 
@@ -8,27 +8,48 @@ const ExpenseCreator = () => {
   const handleShow = () => setShow(true);
 
   return (
-  <>
-    <Button variant="primary" className='float-end' onClick={handleShow}>
-      New Expense Item
-    </Button>
+    <>
+      <Button variant="primary" className='float-end' onClick={handleShow}>
+        New Expense Item
+      </Button>
 
 
-    <Modal show={show} onHide={handleClose}>
-      <Modal.Header closeButton>
-        <Modal.Title>Modal heading</Modal.Title>
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Add new expense item</Modal.Title>
         </Modal.Header>
-        <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={handleClose}>
-            Save Changes
-          </Button>
-      </Modal.Footer>
-    </Modal>
-  </>
+        <Modal.Body>
+          <Form>
+            <Form.Group className="mb-3" controlId="expenseDescription">
+              <Form.Label>Expense Description</Form.Label>
+              <Form.Control type="text" placeholder="Enter expense Description" />
+            </Form.Group>
+
+            <Form.Group className="mb-3" controlId="payeeName">
+              <Form.Label>Payee name</Form.Label>
+              <Form.Select aria-label="Default select example">
+                <option>Select Payee Name</option>
+                <option value="Ramesh">Ramesh</option>
+                <option value="Rahul">Rahul</option>
+              </Form.Select>
+            </Form.Group>
+
+            <Form.Group className="mb-3" controlId="price">
+              <Form.Label>Price</Form.Label>
+              <Form.Control type="Number" placeholder="Enter the amount" />
+            </Form.Group>
+
+            <Button variant="primary" type="submit">
+              Add expense
+            </Button>
+
+            <Button variant="secondary" onClick={handleClose}>
+              Cancel
+            </Button>
+          </Form>
+        </Modal.Body>
+      </Modal>
+    </>
   );
 }
 
