@@ -7,8 +7,9 @@ import {postExpenseItems} from '../services/expense';
 type ExpenseCreatorModel = {
 
   expenseItems: IExpenseItem[];
+  refreshParent : ( newExpenseItem : IExpenseItem) => void;
 }
-const ExpenseCreator = ({expenseItems}: ExpenseCreatorModel) => {
+const ExpenseCreator = ({expenseItems, refreshParent}: ExpenseCreatorModel) => {
 
   const [show, setShow] = useState(false);
 
@@ -35,6 +36,8 @@ const ExpenseCreator = ({expenseItems}: ExpenseCreatorModel) => {
 
     const updatedExpenseCreateItm = await postExpenseItems(expenseCreateItem);
     console.log(updatedExpenseCreateItm);
+
+    refreshParent(updatedExpenseCreateItm);
     handleClose();
   }
 

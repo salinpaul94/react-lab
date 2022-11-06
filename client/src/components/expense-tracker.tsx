@@ -33,11 +33,22 @@ const ExpenseTracker = () => {
         getAllExpenseItemsInvoker();
     }, []);
 
+    const refreshParent = (newExpenseItem : IExpenseItem) => {
+
+        setExpenseItems(
+            [
+                ...expenseItems,
+                newExpenseItem
+            ]
+        );
+
+    }
+
     return (
         <Container className="my-4">
 
             <h2>Expense Management Application
-                <ExpenseCreator expenseItems={expenseItems}/>
+                <ExpenseCreator expenseItems={expenseItems} refreshParent={refreshParent}/>
             </h2>
 
             {
