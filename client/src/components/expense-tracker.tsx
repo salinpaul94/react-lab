@@ -5,6 +5,7 @@ import { getAllExpenseItems } from "../services/expense";
 import { ExpenseItems } from "./expense-items";
 import "bootstrap/dist/css/bootstrap.min.css"
 import { ExpenseByPayees } from "./expense-by-payee";
+import { ExpenseCreator } from "./expense-creator";
 
 const ExpenseTracker = () => {
 
@@ -35,7 +36,9 @@ const ExpenseTracker = () => {
     return (
         <Container className="my-4">
 
-            <h2>Expense Management Application</h2>
+            <h2>Expense Management Application
+                <ExpenseCreator/>
+            </h2>
 
             {
                 loading && (
