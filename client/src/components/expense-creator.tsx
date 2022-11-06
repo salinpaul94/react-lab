@@ -1,7 +1,8 @@
 import { Button, Modal, Form } from 'react-bootstrap'
 import { FormEvent, useState, useRef } from 'react';
-import {getAllPayeeNames} from '../services/expense-utils';
+import {getAllPayeeNames, } from '../services/expense-utils';
 import IExpenseItem, { IExpenseCreateItem } from "../models/expense"
+import {postExpenseItems} from '../services/expense';
 
 type ExpenseCreatorModel = {
 
@@ -18,19 +19,22 @@ const ExpenseCreator = ({expenseItems}: ExpenseCreatorModel) => {
   const payeeRef = useRef<HTMLSelectElement>(null);
   const priceRef = useRef<HTMLInputElement>(null);
 
-  const handleAddExpense = (event : FormEvent<HTMLFormElement>) => {
+  const handleAddExpense = async (event : FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     console.log(`${expenseDescriptionRef?.current?.value}`);
     console.log(`${payeeRef?.current?.value}`);
     console.log(`${priceRef?.current?.value}`);
 
-    const newExpenseItem : IExpenseCreateItem = {
+    const expenseCreateItem : IExpenseCreateItem = {
       payeeName: payeeRef.current?.value as string,
       product: expenseDescriptionRef.current?.value as string,
       price: parseFloat(priceRef.current?.value as string),
       date: new Date()
     }
+
+    const updatedExpenseCreateItm = await postExpenseItems(expenseCreateItem);
+    console.log(updatedExpenseCreateItm);
     handleClose();
   }
 
