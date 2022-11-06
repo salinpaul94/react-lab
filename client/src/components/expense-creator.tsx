@@ -1,7 +1,7 @@
 import { Button, Modal, Form } from 'react-bootstrap'
 import { FormEvent, useState, useRef } from 'react';
 import {getAllPayeeNames} from '../services/expense-utils';
-import IExpenseItem from "../models/expense"
+import IExpenseItem, { IExpenseCreateItem } from "../models/expense"
 
 type ExpenseCreatorModel = {
 
@@ -24,6 +24,13 @@ const ExpenseCreator = ({expenseItems}: ExpenseCreatorModel) => {
     console.log(`${expenseDescriptionRef?.current?.value}`);
     console.log(`${payeeRef?.current?.value}`);
     console.log(`${priceRef?.current?.value}`);
+
+    const newExpenseItem : IExpenseCreateItem = {
+      payeeName: payeeRef.current?.value as string,
+      product: expenseDescriptionRef.current?.value as string,
+      price: parseFloat(priceRef.current?.value as string),
+      date: new Date()
+    }
     handleClose();
   }
 
